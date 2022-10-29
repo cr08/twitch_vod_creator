@@ -18,14 +18,7 @@ Example channels with these video renders:
 We leverage [python-twitch-client](https://github.com/tsifrer/python-twitch-client) library which recently added oauth support.
 You will need at least version 0.7.1 installed to have the correct api support functions.
 
-```
-pip install python-twitch-client
-pip install PyYAML
-pip install youtube-video-upload
-pip install youtube_dl
-pip install webvtt-py
-pip install vosk
-```
+`python -m pip install -r requirements.txt`
 
 You will need to make a copy of *[config/auth_example.yaml](config/auth_example.yaml)* and rename it to `config/auth.yaml`.
 This should be fill out with a twitch app client information which can be generated from the twitch [developer center](https://dev.twitch.tv/console/apps).
