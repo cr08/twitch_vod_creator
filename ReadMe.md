@@ -15,8 +15,6 @@ You will need at least version 0.7.1 installed to have the correct api support f
 
 You will need to make a copy of *[config/auth_example.yaml](config/auth_example.yaml)* and rename it to `config/auth.yaml`.
 This should be fill out with a twitch app client information which can be generated from the twitch [developer center](https://dev.twitch.tv/console/apps).
-For youtube uploads you will need to generate a oauth json file after you enable Youtube API V3 access in the Google developer console.
-Please take a look at the original [youtube-video-upload](https://github.com/remorses/youtube-video-upload) repository for those details if you want to try this.
 
 If you are running this on a linux machine, you will need the ffmpeg binary for your system.
 Try to download from the official website as your machine repositories will be too far out of date.
