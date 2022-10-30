@@ -28,11 +28,6 @@ sudo crontab -e
 */15 * * * * /path/to/repo/crontab_script_launcher.sh 1_render_segments.py
 * */12 * * * /path/to/repo/crontab_script_launcher.sh 0_main_clips.py
 ```
-### Known Issues
-
-* Ffmpeg rendering still seems to be a bit slow (1.7-2.0x speedup) which I have been unable to increase.
-This might be due to the limit of the read speed of my harddrive or tuning of the ffmpeg parameters (which for me do not max out my gpu and cpu).
-
 ### Credits & Attribution
 
 This repo has been heavily modified from [goldbattle's](https://github.com/goldbattle) [Twitch VOD Creator](https://github.com/goldbattle/twitch_vod_creator) - All credit and attribution as well as a huge amount of thanks goes out to them for creating the core functionality of automatically retrieving the requisite content from Twitch.
