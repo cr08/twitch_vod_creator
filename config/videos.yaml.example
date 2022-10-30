@@ -1,0 +1,4 @@
+channels: [yogscast, ar_comm, ferdam_lol]
+max_videos: 60
+render_chat: [False, False, True]
+render_webvtt: [False, True, False]

@@ -20,14 +20,14 @@ with open(auth_config) as f:
 client_id = auth["client_id"]
 client_secret = auth["client_secret"]
 
-# parameters
-# channels = ['xqcow', 'moonmoon', 'sodapoppin', 'clintstevens', 'pokelawls', 'forsen', 'nmplol']
-# min_view_counts = [5000, 2000, 2000, 500, 1000, 5000, 2000]
-channels = ['xqcow', 'moonmoon', 'sodapoppin', 'clintstevens', 'pokelawls', 'forsen', 'nmplol', 'jerma985', 'veibae']
-min_view_counts = [5000, 2000, 2000, 500, 1000, 5000, 2000, 500, 500]
+clips_config = path_base + "/config/clips.yaml"
+with open(clips_config) as g:
+    clips = yaml.load(f, Loader=yaml.FullLoader)
+channels = clips["channels"]
+min_view_counts = clips["min_view_counts"]
+num_days_to_query = clips["num_days_to_query"]
 
 # number of days to try to request
-num_days_to_query = 20
 date_start = (datetime.datetime.now()-datetime.timedelta(days=num_days_to_query)).strftime('%Y-%m-%dT%H:%M:%SZ')
 date_end = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')
 print("Start Day: "+date_start)

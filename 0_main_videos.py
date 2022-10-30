@@ -4,6 +4,7 @@ import twitch  # pip install python-twitch-client
 import yaml  # pip install PyYAML
 from webvtt import WebVTT, Caption  # pip install webvtt-py
 from vosk import Model, KaldiRecognizer, SetLogLevel  # pip install vosk
+from discord_webhook import DiscordWebhook # pip install discord-webhook
 
 import os
 import json
@@ -21,26 +22,13 @@ with open(auth_config) as f:
 client_id = auth["client_id"]
 client_secret = auth["client_secret"]
 
-# parameters - commented out while testing moving to separate config file
-#channels = [
-#    'sodapoppin', 'nmplol',
-#    'moonmoon', 'clintstevens', 'pokelawls', 'sevadus',
-#    'jerma985', 'heydoubleu',
-#     'roflgator', 'cyr', 'veibae'
-# ]
-# max_videos = 60
-# render_chat = [
-#     True, False,
-#     False, True, False, False,
-#     False, False,
-#     False, False, False
-# ]
-# render_webvtt = [
-#     True, False,
-#     False, True, False, False,
-#     False, False,
-#     False, False, True
-# ]
+videos_config = path_base + "/config/videos.yaml"
+with open(videos_config) as g:
+    videos = yaml.load(g, Loader=yaml.FullLoader)
+channels = videos["channels"]
+max_videos = videos["max_videos"]
+render_chat = videos["render_videos"]
+render_webvtt = videos["render_vtt"]
 
 # ================================================================
 # ================================================================
