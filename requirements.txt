@@ -6,3 +6,4 @@ youtube-video-upload
 youtube_dl
 webvtt-py
 vosk
+discord-webhook

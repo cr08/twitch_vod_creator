@@ -9,3 +9,6 @@ pushover_enable: false
 pushover_user_key: xxxxxxxxxxxxxx
 pushover_app_key: xxxxxxxxxxxxxx
 
+# Discord webhook for notifications
+discord_enable: False
+webhook_url: https://derp/
