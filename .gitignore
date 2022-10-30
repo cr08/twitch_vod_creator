@@ -1,6 +1,6 @@
 
 # auth cookies
-config/auth.yaml
+config/*.yaml
 
 # jetbrains
 .idea

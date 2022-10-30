@@ -21,26 +21,26 @@ with open(auth_config) as f:
 client_id = auth["client_id"]
 client_secret = auth["client_secret"]
 
-# parameters
-channels = [
-    'sodapoppin', 'nmplol',
-    'moonmoon', 'clintstevens', 'pokelawls', 'sevadus',
-    'jerma985', 'heydoubleu',
-    'roflgator', 'cyr', 'veibae'
-]
-max_videos = 60
-render_chat = [
-    True, False,
-    False, True, False, False,
-    False, False,
-    False, False, False
-]
-render_webvtt = [
-    True, False,
-    False, True, False, False,
-    False, False,
-    False, False, True
-]
+# parameters - commented out while testing moving to separate config file
+#channels = [
+#    'sodapoppin', 'nmplol',
+#    'moonmoon', 'clintstevens', 'pokelawls', 'sevadus',
+#    'jerma985', 'heydoubleu',
+#     'roflgator', 'cyr', 'veibae'
+# ]
+# max_videos = 60
+# render_chat = [
+#     True, False,
+#     False, True, False, False,
+#     False, False,
+#     False, False, False
+# ]
+# render_webvtt = [
+#     True, False,
+#     False, True, False, False,
+#     False, False,
+#     False, False, True
+# ]
 
 # ================================================================
 # ================================================================
