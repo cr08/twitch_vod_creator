@@ -1,6 +1,6 @@
-# twitch vod creator
+# Twitch VOD Creator
 
-The goal of these scripts is to enable the automatic downloading twitch vods, highlights, clips, and associated chat transcripts.
+The goal of these scripts is to enable the automatic downloading of Twitch VODs, Highlights, Clips, and associated chat transcripts.
 
 At the core we leverage lay295's [TwitchDownload](https://github.com/lay295/TwitchDownloader) utility to download both complete vods, highlights, clips, and chats.
 
@@ -34,3 +34,7 @@ sudo crontab -e
 
 * Ffmpeg rendering still seems to be a bit slow (1.7-2.0x speedup) which I have been unable to increase.
 This might be due to the limit of the read speed of my harddrive or tuning of the ffmpeg parameters (which for me do not max out my gpu and cpu).
+
+### Credits & Attribution
+
+This repo has been heavily modified from [goldbattle's](https://github.com/goldbattle) [Twitch VOD Creator](https://github.com/goldbattle/twitch_vod_creator) - All credit and attribution as well as a huge amount of thanks goes out to them for creating the core functionality of automatically retrieving the requisite content from Twitch.
