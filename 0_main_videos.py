@@ -157,6 +157,9 @@ for idx, user in enumerate(users):
             'recorded_at_iso': video['helix']['created_at'].strftime('%Y%m%d T%H%M%SZ')
         }
 
+        # providing a single source for all filename calls in this script, including stripping illegal characters
+        filename_format = utils.cleanFilename(str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']))
+
         # extract what folder we should save into
         # create the folder if it isn't created already
         try:
@@ -168,7 +171,7 @@ for idx, user in enumerate(users):
             os.makedirs(path_data + export_folder)
 
         # VIDEO: check if the file exists
-        file_path_info = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + "_info.json"
+        file_path_info = path_data + export_folder + filename_format + "_info.json"
         print("\t- saving video info: " + file_path_info)
         if not utils.terminated_requested and not os.path.exists(file_path_info):
             with open(file_path_info, 'w', encoding="utf-8") as file:
@@ -187,7 +190,7 @@ for idx, user in enumerate(users):
                 json.dump(video_info, file, indent=4)
 
         # VIDEO: check if the file exists
-        file_path = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + ".mp4"
+        file_path = path_data + export_folder + filename_format + ".mp4"
         print("\t- download video: " + file_path)
         if not utils.terminated_requested and not os.path.exists(file_path):
             t0 = time.time()
@@ -200,7 +203,7 @@ for idx, user in enumerate(users):
             print("\t- done in " + str(time.time() - t0) + " seconds")
 
         # CHAT: check if the file exists
-        file_path_chat = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + "_chat.json"
+        file_path_chat = path_data + export_folder + filename_format + "_chat.json"
         file_path_chat_tmp = path_temp + str(video['helix']['id']) + "_chat.json"
         print("\t- download chat: " + file_path_chat)
         if not utils.terminated_requested and not os.path.exists(file_path_chat):
@@ -216,7 +219,7 @@ for idx, user in enumerate(users):
             print("\t- done in " + str(time.time() - t0) + " seconds")
 
         # AUDIO-TO-TEXT: check if file exists
-        file_path_webvtt = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + ".vtt"
+        file_path_webvtt = path_data + export_folder + filename_format + ".vtt"
         if not utils.terminated_requested and os.path.exists(file_path) and not os.path.exists(file_path_webvtt) and render_webvtt[idx]:
             print("\t- transcribing: " + file_path_webvtt)
             t0 = time.time()
@@ -262,8 +265,8 @@ for idx, user in enumerate(users):
             utils.send_pushover_message(auth, text)
 
         # RENDER: check if the file exists
-        file_path_chat = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + "_chat.json"
-        file_path_render = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + "_chat.mp4"
+        file_path_chat = path_data + export_folder + filename_format + "_chat.json"
+        file_path_render = path_data + export_folder + filename_format + "_chat.mp4"
         file_path_render_tmp = path_temp + str(video['helix']['id']) + "_chat.mp4"
         if not utils.terminated_requested and os.path.exists(file_path_chat) and not os.path.exists(file_path_render) and render_chat[idx]:
             print("\t- rendering chat: " + file_path_render)

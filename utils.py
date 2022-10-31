@@ -183,3 +183,6 @@ def send_pushover_message(auth, text):
         if not resp.ok:
             print("[error]: bad response from pushover: ")
             print(resp)
+
+def cleanFilename(sourcestring,  removestring ="/<>\:\"\\|?*"):
+    return ''.join([c for c in sourcestring if c not in removestring])
