@@ -27,20 +27,20 @@ with open(videos_config) as g:
     videos = yaml.load(g, Loader=yaml.FullLoader)
 channels = videos["channels"]
 max_videos = videos["max_videos"]
-render_chat = videos["render_videos"]
-render_webvtt = videos["render_vtt"]
+render_chat = videos["render_chat"]
+render_webvtt = videos["render_webvtt"]
 
 # ================================================================
 # ================================================================
 
 # paths of the cli and data
-# path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI.exe"
-# path_twitch_ffmpeg = path_base + "/thirdparty/Twitch_Downloader_1.40.7/ffmpeg.exe"
-path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI"
-path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-4.3.1-amd64-static/ffmpeg"
-path_root = path_base + "/../data/"
+path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI.exe"
+path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-N-99900-g89429cf2f2-win64-lgpl/ffmpeg.exe"
+#path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI"
+#path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-4.3.1-amd64-static/ffmpeg"
+path_root = path_base + "/../data"
 # path_temp = path_base + "/../data_temp/main_videos/"
-path_temp = "/tmp/tvc_main_videos/"
+path_temp = path_base + "/../data_temp/tvc_main_videos"
 path_model = path_base + "/thirdparty/vosk-model-small-en-us-0.15/"
 
 # ================================================================
@@ -147,12 +147,14 @@ for idx, user in enumerate(users):
             'user_id': video['helix']['user_id'],
             'user_name': video['helix']['user_name'],
             'title': video['helix']['title'],
+            'type': video['helix']['type'],
             'duration': video['helix']['duration'],
             'url': video['helix']['url'],
             'views': video['helix']['view_count'],
             'moments': utils.get_vod_moments(video['helix']['id']),
             'muted_segments': (video['helix']['muted_segments'] if video['helix']['muted_segments'] != None else []),
             'recorded_at': video['helix']['created_at'].strftime('%Y-%m-%dT%H:%M:%SZ'),
+            'recorded_at_iso': video['helix']['created_at'].strftime('%Y%m%d T%H%M%SZ')
         }
 
         # extract what folder we should save into
@@ -166,7 +168,7 @@ for idx, user in enumerate(users):
             os.makedirs(path_data + export_folder)
 
         # VIDEO: check if the file exists
-        file_path_info = path_data + export_folder + str(video['helix']['id']) + "_info.json"
+        file_path_info = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + "_info.json"
         print("\t- saving video info: " + file_path_info)
         if not utils.terminated_requested and not os.path.exists(file_path_info):
             with open(file_path_info, 'w', encoding="utf-8") as file:
@@ -185,20 +187,20 @@ for idx, user in enumerate(users):
                 json.dump(video_info, file, indent=4)
 
         # VIDEO: check if the file exists
-        file_path = path_data + export_folder + str(video['helix']['id']) + ".mp4"
+        file_path = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + ".mp4"
         print("\t- download video: " + file_path)
         if not utils.terminated_requested and not os.path.exists(file_path):
             t0 = time.time()
             cmd = path_twitch_cli + ' -m VideoDownload' \
                   + ' --id ' + str(video['helix']['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
-                  + ' --temp-path "' + path_temp + '" --quality 1080p60 -o ' + file_path
-                  #+ ' --quality 1080p60 -o ' + file_path
+                  + ' --temp-path "' + path_temp + '" -o "' + file_path + '"'
+            print("CMD: " + str(cmd))
             subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
             # subprocess.Popen(cmd, shell=True).wait()
             print("\t- done in " + str(time.time() - t0) + " seconds")
 
         # CHAT: check if the file exists
-        file_path_chat = path_data + export_folder + str(video['helix']['id']) + "_chat.json"
+        file_path_chat = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + "_chat.json"
         file_path_chat_tmp = path_temp + str(video['helix']['id']) + "_chat.json"
         print("\t- download chat: " + file_path_chat)
         if not utils.terminated_requested and not os.path.exists(file_path_chat):
@@ -213,19 +215,8 @@ for idx, user in enumerate(users):
                 shutil.move(file_path_chat_tmp, file_path_chat) 
             print("\t- done in " + str(time.time() - t0) + " seconds")
 
-        # RENDER: also render downscaled video for quick scrubbing....
-        # file_path_render = path_data + export_folder + str(video['helix']['id']) + "_downscaled.mp4"
-        # file_path_render_tmp = path_temp + str(video['helix']['id']) + "_downscaled.mp4"
-        # if os.path.exists(file_path) and not os.path.exists(file_path_render) and render_chat[idx]:
-        #     print("\t- rendering downscaled: " + file_path_render)
-        #     cmd = path_twitch_ffmpeg + ' -i ' + file_path \
-        #           + ' -vf scale="480:270" -c:a copy ' + file_path_render_tmp
-        #     subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
-        #     # subprocess.Popen(cmd, shell=True).wait()
-        #     shutil.move(file_path_render_tmp, file_path_render) 
-
         # AUDIO-TO-TEXT: check if file exists
-        file_path_webvtt = path_data + export_folder + str(video['helix']['id']) + ".vtt"
+        file_path_webvtt = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + ".vtt"
         if not utils.terminated_requested and os.path.exists(file_path) and not os.path.exists(file_path_webvtt) and render_webvtt[idx]:
             print("\t- transcribing: " + file_path_webvtt)
             t0 = time.time()
@@ -271,8 +262,8 @@ for idx, user in enumerate(users):
             utils.send_pushover_message(auth, text)
 
         # RENDER: check if the file exists
-        file_path_chat = path_data + export_folder + str(video['helix']['id']) + "_chat.json"
-        file_path_render = path_data + export_folder + str(video['helix']['id']) + "_chat.mp4"
+        file_path_chat = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + "_chat.json"
+        file_path_render = path_data + export_folder + str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + "_chat.mp4"
         file_path_render_tmp = path_temp + str(video['helix']['id']) + "_chat.mp4"
         if not utils.terminated_requested and os.path.exists(file_path_chat) and not os.path.exists(file_path_render) and render_chat[idx]:
             print("\t- rendering chat: " + file_path_render)

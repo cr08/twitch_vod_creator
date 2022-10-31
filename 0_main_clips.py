@@ -22,7 +22,7 @@ client_secret = auth["client_secret"]
 
 clips_config = path_base + "/config/clips.yaml"
 with open(clips_config) as g:
-    clips = yaml.load(f, Loader=yaml.FullLoader)
+    clips = yaml.load(g, Loader=yaml.FullLoader)
 channels = clips["channels"]
 min_view_counts = clips["min_view_counts"]
 num_days_to_query = clips["num_days_to_query"]
