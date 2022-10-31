@@ -1,1 +1,2 @@
 thirdparty/TwitchDownloaderCLI filter=lfs diff=lfs merge=lfs -text
+thirdparty/TwitchDownloaderCLI.exe filter=lfs diff=lfs merge=lfs -text
