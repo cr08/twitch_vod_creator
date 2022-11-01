@@ -34,13 +34,13 @@ render_webvtt = videos["render_webvtt"]
 # ================================================================
 
 # paths of the cli and data
-path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI.exe"
-path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-N-99900-g89429cf2f2-win64-lgpl/ffmpeg.exe"
-#path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI"
-#path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-4.3.1-amd64-static/ffmpeg"
-path_root = path_base + "/../data"
+#path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI.exe"
+#path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-N-99900-g89429cf2f2-win64-lgpl/ffmpeg.exe"
+path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI"
+path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-4.3.1-amd64-static/ffmpeg"
+path_root = "/mnt/twitchtest/videos/"
 # path_temp = path_base + "/../data_temp/main_videos/"
-path_temp = path_base + "/../data_temp/tvc_main_videos"
+path_temp = "/mnt/twitchtest/temp_videos/"
 path_model = path_base + "/thirdparty/vosk-model-small-en-us-0.15/"
 
 # ================================================================
