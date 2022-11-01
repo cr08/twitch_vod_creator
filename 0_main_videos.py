@@ -158,7 +158,7 @@ for idx, user in enumerate(users):
         }
 
         # providing a single source for all filename calls in this script, including stripping illegal characters
-        filename_format = utils.cleanFilename(str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']))
+        filename_format = utils.cleanFilename(str(video_data['recorded_at_iso']) + " - " + str(video['helix']['id']) + " - " + str(video['helix']['title']) + "_" + str(video['helix']['type']))
 
         # extract what folder we should save into
         # create the folder if it isn't created already
