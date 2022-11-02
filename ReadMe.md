@@ -6,6 +6,7 @@ My personal goal has been to find or develop a tool that can not only automate a
 
 ### Known Issues
 * VTT render produces files with a single word displayed at a time (at least as played via VLC). This needs to be fixed. I may just switch this to SRT as Vosk can natively output this and hopefully it outputs correctly. More testing needed here...
+* If a video is missing the chat log (usually due to an ancient clip or highlight that the source VOD is gone), it keeps attempting to download each run. Possible workaround: Determine if TDCLI provides a useful error for this condition and write a placeholder `_chat.json` to satisfy the file checks.
 
 ## Credit & Attribution
 
