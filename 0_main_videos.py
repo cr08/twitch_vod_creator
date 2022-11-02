@@ -211,7 +211,6 @@ for idx, user in enumerate(users):
                   + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
                   + ' --id ' + str(video['helix']['id']) + ' --embed-emotes' \
                   + ' -o ' + file_path_chat_tmp
-            print("CMD: " + str(cmd))
             subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
             # subprocess.Popen(cmd, shell=True).wait()
             if os.path.exists(file_path_chat_tmp):
@@ -361,6 +360,7 @@ for idx, user in enumerate(users):
                   + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
                   + ' --id ' + str(video['helix']['id']) + ' --embed-emotes' \
                   + ' -o ' + file_path_chat_tmp
+            print("CMD: " + str(cmd))
             subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
             # subprocess.Popen(cmd, shell=True).wait()
             if os.path.exists(file_path_chat_tmp):
