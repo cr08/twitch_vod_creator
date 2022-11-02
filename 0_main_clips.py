@@ -37,10 +37,10 @@ print("End Day: "+date_end)
 # ================================================================
 
 # paths of the cli and data
-path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI.exe"
-path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-N-99900-g89429cf2f2-win64-lgpl/ffmpeg.exe"
-#path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI"
-#path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-4.3.1-amd64-static/ffmpeg"
+#path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI.exe"
+#path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-N-99900-g89429cf2f2-win64-lgpl/ffmpeg.exe"
+path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI"
+path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-4.3.1-amd64-static/ffmpeg"
 path_root = clips["clip_downloads"]
 path_temp = clips["clip_temp"]
 
@@ -113,7 +113,7 @@ for idx, user in enumerate(users):
 
             # INFO: always save to file so our viewcount gets updated!
             # INFO: we only update the viewcount, as when the VOD gets deleted most elements are lost
-            file_path_info = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_info.json"
+            file_path_info = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " +  str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_info.json"
             if not utils.terminated_requested and not os.path.exists(file_path_info):
                 print("\t- saving clip info: " + file_path_info)
 
@@ -170,7 +170,7 @@ for idx, user in enumerate(users):
 
 
             # VIDEO: check if the file exists
-            file_path = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip.mp4"
+            file_path = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " + str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip.mp4"
             file_path_tmp = path_temp + str(video['id']) + ".mp4"
             print("\t- download clip: " + str(video['id']))
             if not utils.terminated_requested and not os.path.exists(file_path):
@@ -184,7 +184,7 @@ for idx, user in enumerate(users):
                 count_total_clips_downloaded = count_total_clips_downloaded + 1
 
             # CHAT: check if the file exists
-            file_path_chat = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_chat.json"
+            file_path_chat = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " + str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_chat.json"
             file_path_chat_tmp = path_temp + str(video['id']) + "_chat.json"
             print("\t- download chat: " + str(video['id']) + "_chat.json")
             if not utils.terminated_requested and not os.path.exists(file_path_chat):
