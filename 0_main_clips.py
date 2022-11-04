@@ -37,10 +37,10 @@ print("End Day: "+date_end)
 # ================================================================
 
 # paths of the cli and data
-#path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI.exe"
-#path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-N-99900-g89429cf2f2-win64-lgpl/ffmpeg.exe"
-path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI"
-path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-4.3.1-amd64-static/ffmpeg"
+path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI.exe"
+path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-N-99900-g89429cf2f2-win64-lgpl/ffmpeg.exe"
+#path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI"
+#path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-4.3.1-amd64-static/ffmpeg"
 path_root = clips["clip_downloads"]
 path_temp = clips["clip_temp"]
 
@@ -89,7 +89,8 @@ for idx, user in enumerate(users):
         vid_iter = client_helix.get_clips(broadcaster_id=user["id"], page_size=100,
                                           started_at=date_start, ended_at=date_end)
         # vid_iter = client_helix.get_clips(broadcaster_id=user["id"], page_size=100)
-        arr_clips = []
+        # arr_clips = []
+
         for video in vid_iter:
 
             # check if we should download any more
@@ -108,7 +109,7 @@ for idx, user in enumerate(users):
                 break
 
             # nice debug print
-            arr_clips.append(video)
+            # arr_clips.append(video)
             print("processing " + video['url'] + " (" + str(video['view_count']) + " views)")
 
             # INFO: always save to file so our viewcount gets updated!
@@ -186,16 +187,27 @@ for idx, user in enumerate(users):
 
             # CHAT: check if the file exists
             file_path_chat = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " + str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_chat.json"
+            file_bad = file_path_chat + ".BAD"
             file_path_chat_tmp = path_temp + str(video['id']) + "_chat.json"
             print("\t- download chat: " + str(video['id']) + "_chat.json")
-            if not utils.terminated_requested and not os.path.exists(file_path_chat):
+            if os.path.exists(file_bad):
+                print("FILE_BAD EXISTS")
+            if not utils.terminated_requested and (not os.path.exists(file_path_chat) or not os.path.exists(file_bad)):
                 cmd = path_twitch_cli + ' -m ChatDownload' \
                       + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
                       + ' --embed-emotes' + ' -o ' + file_path_chat_tmp
                 print("CMD: " + str(cmd))
-                # subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
-                subprocess.Popen(cmd, shell=True).wait()
-                shutil.move(file_path_chat_tmp, file_path_chat) 
+
+                # Attempt to download chat log. If it does not exist, TDCLI will produce a non-zero exit code. We create a placeholder file with a .BAD extension to bypass future file checks
+                proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                proc.wait()
+                if proc.returncode != 0:
+                    print("ERR: Clip has no chat. Either nothing was said or the source VOD is no longer available. Inserting placeholder.")               
+                    with open(file_bad, 'w') as fp:
+                        fp.write("No chat log for this clip. Either nothing was said or the source VOD is no longer available.")
+                else:
+                    print("GOOD: File moved")
+                    shutil.move(file_path_chat_tmp, file_path_chat)
 
         # # loop through each and download
         # for video in arr_clips:
@@ -216,8 +228,8 @@ for idx, user in enumerate(users):
         #               + ' -o ' + file_path_render
         #         subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL).wait()
 
-    except Exception as e:
-        print(e)
+    except Exception as main_e:
+        print(main_e)
 
 t1 = time.time()
 print("number of checked clips: " + str(count_total_clips_checked))
