@@ -189,27 +189,28 @@ for idx, user in enumerate(users):
             file_path_chat = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " + str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_chat.json"
             file_bad = file_path_chat + ".BAD"
             file_path_chat_tmp = path_temp + str(video['id']) + "_chat.json"
-            if os.path.exists(file_bad):
-                print("\t- FILE_BAD EXISTS - Skipping Chat download")
-            if not utils.terminated_requested and (not os.path.exists(file_path_chat) or not os.path.exists(file_bad)):
-                print("\t- download chat: " + str(video['id']) + "_chat.json")
-                cmd = path_twitch_cli + ' -m ChatDownload' \
-                      + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
-                      + ' --embed-emotes' + ' -o ' + file_path_chat_tmp
-                # print("\t- CMD: " + str(cmd))
-
-                # Attempt to download chat log. If it does not exist, TDCLI will produce a non-zero exit code. We create a placeholder file with a .BAD extension to bypass future file checks
-                proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                proc.wait()
-                if proc.returncode != 0:
-                    print("\t- ERR: Clip has no chat. Either nothing was said or the source VOD is no longer available. Inserting placeholder.")               
-                    with open(file_bad, 'w') as fp:
-                        fp.write("No chat log for this clip. Either nothing was said or the source VOD is no longer available.")
-                else:
-                    print("\t- GOOD: File moved")
-                    shutil.move(file_path_chat_tmp, file_path_chat)
+            if os.path.exists(file_bad) or os.path.exists(file_path_chat):
+                print("\t- chat file exists - Skipping Chat download")
             else:
-                print("\t - chat download SKIPPED")
+                if not utils.terminated_requested:
+                    print("\t- download chat: " + str(video['id']) + "_chat.json")
+                    cmd = path_twitch_cli + ' -m ChatDownload' \
+                          + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
+                          + ' --embed-emotes' + ' -o ' + file_path_chat_tmp
+                    # print("\t- CMD: " + str(cmd))
+
+                    # Attempt to download chat log. If it does not exist, TDCLI will produce a non-zero exit code. We create a placeholder file with a .BAD extension to bypass future file checks
+                    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    proc.wait()
+                    if proc.returncode != 0:
+                        print("\t- ERR: Clip has no chat. Either nothing was said or the source VOD is no longer available. Inserting placeholder.")               
+                        with open(file_bad, 'w') as fp:
+                            fp.write("No chat log for this clip. Either nothing was said or the source VOD is no longer available.")
+                    else:
+                        print("\t- GOOD: File moved")
+                        shutil.move(file_path_chat_tmp, file_path_chat)
+                else:
+                    print("\t - chat download SKIPPED")
 
         # # loop through each and download
         # for video in arr_clips:
