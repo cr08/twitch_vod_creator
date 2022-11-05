@@ -40,7 +40,7 @@ print("End Day: "+date_end)
 # Check for ffmpeg path as installed by static-ffmpeg and the installed version of python/pip
 #   A full path is needed for TwitchDownloader
 
-ffmpeg_path = shutil.which('ffmpeg'))
+ffmpeg_path = shutil.which('ffmpeg')
 
 # ================================================================
 # ================================================================
