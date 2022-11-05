@@ -403,22 +403,9 @@ for idx, user in enumerate(users):
             proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             proc.wait()
             if proc.returncode != 0:
-                print("ERR: Chat could not download. It may have some missing emojis we cannot embed. Trying without...")               
-                cmd = path_twitch_cli + ' -m ChatDownload' \
-                  + ' --ffmpeg-path "ffmpeg"' \
-                  + ' --id ' + str(video['helix']['id']) \
-                  + ' -o ' + file_path_chat_tmp
-                print("CMD: " + str(cmd))
-                proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                proc.wait()
-                if proc.returncode != 0:
-                    print("ERR: Clip has no chat. Either nothing was said or the source VOD is no longer available. Inserting placeholder.")               
-                    with open(file_bad, 'w') as fp:
-                        fp.write("No chat log for this clip. Either nothing was said or the source VOD is no longer available.")
-                else:
-                    print("GOOD: File moved")
-                    if os.path.exists(file_path_chat_tmp):
-                        shutil.move(file_path_chat_tmp, file_path_chat)
+                print("ERR: Clip has no chat. Either nothing was said or the source VOD is no longer available. Inserting placeholder.")               
+                with open(file_bad, 'w') as fp:
+                    fp.write("No chat log for this clip. Either nothing was said or the source VOD is no longer available.")
             else:
                 print("GOOD: File moved")
                 if os.path.exists(file_path_chat_tmp):
