@@ -203,6 +203,7 @@ for idx, user in enumerate(users):
 
         # CHAT: check if the file exists
         file_path_chat = path_data + export_folder + filename_format + "_chat.json"
+        file_bad = file_path_chat + ".BAD"
         file_path_chat_tmp = path_temp + str(video['helix']['id']) + "_chat.json"
         print("\t- download chat: " + file_path_chat)
         if not utils.terminated_requested and not os.path.exists(file_path_chat):
@@ -211,8 +212,37 @@ for idx, user in enumerate(users):
                   + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
                   + ' --id ' + str(video['helix']['id']) + ' --embed-emotes' \
                   + ' -o ' + file_path_chat_tmp
-            subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
-            # subprocess.Popen(cmd, shell=True).wait()
+            print("CMD: " + str(cmd))
+            # Attempt to download chat log. If the first attempt with emojis embedded fails, try again without emojis. TDCLI will error out
+            #   there's issues with downloading emojis. We'd rather download the log without them than fail entirely.
+            #
+            # If the no-emoji attempt fails as well, we'll assume there's no chat log at all for this video. We'll write a blank .BAD file
+            #   to satisfy future file-exists checks.
+            proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            proc.wait()
+            if proc.returncode != 0:
+                print("ERR: Chat could not download. It may have some missing emojis we cannot embed. Trying without...")               
+                cmd = path_twitch_cli + ' -m ChatDownload' \
+                  + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
+                  + ' --id ' + str(video['helix']['id']) \
+                  + ' -o ' + file_path_chat_tmp
+                print("CMD: " + str(cmd))
+                proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                proc.wait()
+                if proc.returncode != 0:
+                    print("ERR: Clip has no chat. Either nothing was said or the source VOD is no longer available. Inserting placeholder.")               
+                    with open(file_bad, 'w') as fp:
+                        fp.write("No chat log for this clip. Either nothing was said or the source VOD is no longer available.")
+                else:
+                    print("GOOD: File moved")
+                    if os.path.exists(file_path_chat_tmp):
+                        shutil.move(file_path_chat_tmp, file_path_chat)
+            else:
+                print("GOOD: File moved")
+                if os.path.exists(file_path_chat_tmp):
+                    shutil.move(file_path_chat_tmp, file_path_chat)
+
+
             if os.path.exists(file_path_chat_tmp):
                 shutil.move(file_path_chat_tmp, file_path_chat) 
             print("\t- done in " + str(time.time() - t0) + " seconds")
@@ -352,6 +382,7 @@ for idx, user in enumerate(users):
 
         # CHAT: check if the file exists
         file_path_chat = path_data + export_folder + filename_format + "_chat.json"
+        file_bad = file_path_chat + ".BAD"
         file_path_chat_tmp = path_temp + str(video['helix']['id']) + "_chat.json"
         print("\t- download chat: " + file_path_chat)
         if not utils.terminated_requested and not os.path.exists(file_path_chat):
@@ -361,10 +392,34 @@ for idx, user in enumerate(users):
                   + ' --id ' + str(video['helix']['id']) + ' --embed-emotes' \
                   + ' -o ' + file_path_chat_tmp
             print("CMD: " + str(cmd))
-            subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
-            # subprocess.Popen(cmd, shell=True).wait()
-            if os.path.exists(file_path_chat_tmp):
-                shutil.move(file_path_chat_tmp, file_path_chat) 
+            # Attempt to download chat log. If the first attempt with emojis embedded fails, try again without emojis. TDCLI will error out
+            #   there's issues with downloading emojis. We'd rather download the log without them than fail entirely.
+            #
+            # If the no-emoji attempt fails as well, we'll assume there's no chat log at all for this video. We'll write a blank .BAD file
+            #   to satisfy future file-exists checks.
+            proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            proc.wait()
+            if proc.returncode != 0:
+                print("ERR: Chat could not download. It may have some missing emojis we cannot embed. Trying without...")               
+                cmd = path_twitch_cli + ' -m ChatDownload' \
+                  + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
+                  + ' --id ' + str(video['helix']['id']) \
+                  + ' -o ' + file_path_chat_tmp
+                print("CMD: " + str(cmd))
+                proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                proc.wait()
+                if proc.returncode != 0:
+                    print("ERR: Clip has no chat. Either nothing was said or the source VOD is no longer available. Inserting placeholder.")               
+                    with open(file_bad, 'w') as fp:
+                        fp.write("No chat log for this clip. Either nothing was said or the source VOD is no longer available.")
+                else:
+                    print("GOOD: File moved")
+                    if os.path.exists(file_path_chat_tmp):
+                        shutil.move(file_path_chat_tmp, file_path_chat)
+            else:
+                print("GOOD: File moved")
+                if os.path.exists(file_path_chat_tmp):
+                    shutil.move(file_path_chat_tmp, file_path_chat)
             print("\t- done in " + str(time.time() - t0) + " seconds")
 
         # AUDIO-TO-TEXT: check if file exists
@@ -502,6 +557,7 @@ for idx, user in enumerate(users):
 
         # CHAT: check if the file exists
         file_path_chat = path_data + export_folder + filename_format + "_chat.json"
+        file_bad = file_path_chat + ".BAD"
         file_path_chat_tmp = path_temp + str(video['helix']['id']) + "_chat.json"
         print("\t- download chat: " + file_path_chat)
         if not utils.terminated_requested and not os.path.exists(file_path_chat):
@@ -510,10 +566,35 @@ for idx, user in enumerate(users):
                   + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
                   + ' --id ' + str(video['helix']['id']) + ' --embed-emotes' \
                   + ' -o ' + file_path_chat_tmp
-            subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
-            # subprocess.Popen(cmd, shell=True).wait()
-            if os.path.exists(file_path_chat_tmp):
-                shutil.move(file_path_chat_tmp, file_path_chat) 
+            print("CMD: " + str(cmd))
+            # Attempt to download chat log. If the first attempt with emojis embedded fails, try again without emojis. TDCLI will error out
+            #   there's issues with downloading emojis. We'd rather download the log without them than fail entirely.
+            #
+            # If the no-emoji attempt fails as well, we'll assume there's no chat log at all for this video. We'll write a blank .BAD file
+            #   to satisfy future file-exists checks.
+            proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            proc.wait()
+            if proc.returncode != 0:
+                print("ERR: Chat could not download. It may have some missing emojis we cannot embed. Trying without...")               
+                cmd = path_twitch_cli + ' -m ChatDownload' \
+                  + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
+                  + ' --id ' + str(video['helix']['id']) \
+                  + ' -o ' + file_path_chat_tmp
+                print("CMD: " + str(cmd))
+                proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                proc.wait()
+                if proc.returncode != 0:
+                    print("ERR: Clip has no chat. Either nothing was said or the source VOD is no longer available. Inserting placeholder.")               
+                    with open(file_bad, 'w') as fp:
+                        fp.write("No chat log for this clip. Either nothing was said or the source VOD is no longer available.")
+                else:
+                    print("GOOD: File moved")
+                    if os.path.exists(file_path_chat_tmp):
+                        shutil.move(file_path_chat_tmp, file_path_chat)
+            else:
+                print("GOOD: File moved")
+                if os.path.exists(file_path_chat_tmp):
+                    shutil.move(file_path_chat_tmp, file_path_chat)
             print("\t- done in " + str(time.time() - t0) + " seconds")
 
         # AUDIO-TO-TEXT: check if file exists
