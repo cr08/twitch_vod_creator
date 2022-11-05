@@ -177,7 +177,7 @@ for idx, user in enumerate(users):
             if not utils.terminated_requested and not os.path.exists(file_path):
                 cmd = path_twitch_cli + ' -m ClipDownload' \
                       + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
-                      + ' --quality 1080p60 -o ' + file_path_tmp
+                      + '-o ' + file_path_tmp
                       #+ ' --temp-path "' + path_root + '/TEMP/" --quality 1080p60 -o ' + file_path
                 print("CMD: " + str(cmd))
                 # subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
@@ -186,7 +186,7 @@ for idx, user in enumerate(users):
                 count_total_clips_downloaded = count_total_clips_downloaded + 1
 
             # CHAT: check if the file exists
-            file_path_chat = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " + utils.cleanFilename(str(game_title)) + " - " + str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_chat.json"
+            file_path_chat = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " + str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_chat.json"
             file_bad = file_path_chat + ".BAD"
             file_path_chat_tmp = path_temp + str(video['id']) + "_chat.json"
             if os.path.exists(file_bad):
