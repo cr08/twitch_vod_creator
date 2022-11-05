@@ -5,19 +5,21 @@ Simplified tool to automatically archive VODs, clips, highlights, including asso
 My personal goal has been to find or develop a tool that can not only automate archiving the latest VODs, clips, and highlights from selected Twitch channels, but also archiving the chat logs as they are available for each medium.
 
 ## Install Guide
-0) Ensure Python 3.8 minimum is installed.
+0) Ensure __Python 3.8__ minimum is installed.
 1) Clone this repository:
     * `git clone https://github.com/cr08/twitch_vod_creator`
 2) Install main python depencies:
     * `python3 -m pip install --user -r requirements.txt`
-3) Download and place [TwitchDownloaderCLI](https://github.com/lay295/TwitchDownloader/releases) for your platform into `/thirdparty`
-    * Latest release recommended, minimum `1.50.6` required as it fixes a chat download issue
-4) Copy and fill out all `config/*.yaml.example` files as necessary.
-    * An application needs to be registered with Twitch from the [Twitch Dev console](https://dev.twitch.tv/) - client ID and secret need to be entered into `config/config.yaml`
+3) Download and place [TwitchDownloaderCLI](https://github.com/lay295/TwitchDownloader/releases) for your platform into __/thirdparty__
+    * Latest release recommended, minimum __1.50.6__ required as it fixes a chat download issue
+    * Ensure TwitchDownloaderCLI is set as executable. This may be necessary on \*nix platforms
+        * `chmod +x thirdparty/TwitchDownloaderCLI`
+4) Copy and fill out all __config/\*.yaml.example__ files as necessary.
+    * An application needs to be registered with Twitch from the [Twitch Dev console](https://dev.twitch.tv/) - client ID and secret need to be entered into __config/config.yaml__
 5) Run scripts as desired:
     * `python3 0_main_videos.py`
     * `python3 0_main_clips.py`
-6) __Optional__ - Linux targets: Add scripts to crontab using `docs/crontab_script_launcher.sh`
+6) __Optional__ - Linux targets: Add scripts to crontab using __docs/crontab_script_launcher.sh__
     * WIP - details to be added here
 
 ### Known Issues
