@@ -34,6 +34,11 @@ max_videos = videos["max_videos"]
 render_chat = videos["render_chat"]
 render_webvtt = videos["render_webvtt"]
 
+# Check for ffmpeg path as installed by static-ffmpeg and the installed version of python/pip
+#   A full path is needed for TwitchDownloader
+
+ffmpeg_path = shutil.which('ffmpeg'))
+
 # ================================================================
 # ================================================================
 
@@ -197,7 +202,7 @@ for idx, user in enumerate(users):
         if not utils.terminated_requested and not os.path.exists(file_path):
             t0 = time.time()
             cmd = path_twitch_cli + ' -m VideoDownload' \
-                  + ' --id ' + str(video['helix']['id']) + ' --ffmpeg-path "ffmpeg"' \
+                  + ' --id ' + str(video['helix']['id']) + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' --temp-path "' + path_temp + '" -o "' + file_path + '"'
             print("CMD: " + str(cmd))
             subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
@@ -212,7 +217,7 @@ for idx, user in enumerate(users):
         if not utils.terminated_requested and not os.path.exists(file_path_chat):
             t0 = time.time()
             cmd = path_twitch_cli + ' -m ChatDownload' \
-                  + ' --ffmpeg-path "ffmpeg"' \
+                  + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' --id ' + str(video['helix']['id']) + ' --embed-emotes' \
                   + ' -o ' + file_path_chat_tmp
             print("CMD: " + str(cmd))
@@ -226,7 +231,7 @@ for idx, user in enumerate(users):
             if proc.returncode != 0:
                 print("ERR: Chat could not download. It may have some missing emojis we cannot embed. Trying without...")               
                 cmd = path_twitch_cli + ' -m ChatDownload' \
-                  + ' --ffmpeg-path "ffmpeg"' \
+                  + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' --id ' + str(video['helix']['id']) \
                   + ' -o ' + file_path_chat_tmp
                 print("CMD: " + str(cmd))
@@ -304,7 +309,7 @@ for idx, user in enumerate(users):
             print("\t- rendering chat: " + file_path_render)
             t0 = time.time()
             cmd = path_twitch_cli + ' -m ChatRender' \
-                  + ' -i ' + file_path_chat + ' --ffmpeg-path "ffmpeg"' \
+                  + ' -i ' + file_path_chat + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' -h 926 -w 274 --update-rate 0.1 --framerate 60 --font-size 15' \
                   + ' --temp-path "' + path_temp + '" -o ' + file_path_render_tmp
             # subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
@@ -376,7 +381,7 @@ for idx, user in enumerate(users):
         if not utils.terminated_requested and not os.path.exists(file_path):
             t0 = time.time()
             cmd = path_twitch_cli + ' -m VideoDownload' \
-                  + ' --id ' + str(video['helix']['id']) + ' --ffmpeg-path "ffmpeg"' \
+                  + ' --id ' + str(video['helix']['id']) + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' --temp-path "' + path_temp + '" -o "' + file_path + '"'
             print("CMD: " + str(cmd))
             subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
@@ -391,7 +396,7 @@ for idx, user in enumerate(users):
         if not utils.terminated_requested and not os.path.exists(file_path_chat):
             t0 = time.time()
             cmd = path_twitch_cli + ' -m ChatDownload' \
-                  + ' --ffmpeg-path "ffmpeg"' \
+                  + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' --id ' + str(video['helix']['id']) + ' --embed-emotes' \
                   + ' -o ' + file_path_chat_tmp
             print("CMD: " + str(cmd))
@@ -466,7 +471,7 @@ for idx, user in enumerate(users):
             print("\t- rendering chat: " + file_path_render)
             t0 = time.time()
             cmd = path_twitch_cli + ' -m ChatRender' \
-                  + ' -i ' + file_path_chat + ' --ffmpeg-path "ffmpeg"' \
+                  + ' -i ' + file_path_chat + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' -h 926 -w 274 --update-rate 0.1 --framerate 60 --font-size 15' \
                   + ' --temp-path "' + path_temp + '" -o ' + file_path_render_tmp
             # subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
@@ -538,7 +543,7 @@ for idx, user in enumerate(users):
         if not utils.terminated_requested and not os.path.exists(file_path):
             t0 = time.time()
             cmd = path_twitch_cli + ' -m VideoDownload' \
-                  + ' --id ' + str(video['helix']['id']) + ' --ffmpeg-path "ffmpeg"' \
+                  + ' --id ' + str(video['helix']['id']) + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' --temp-path "' + path_temp + '" -o "' + file_path + '"'
             print("CMD: " + str(cmd))
             subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
@@ -553,7 +558,7 @@ for idx, user in enumerate(users):
         if not utils.terminated_requested and not os.path.exists(file_path_chat):
             t0 = time.time()
             cmd = path_twitch_cli + ' -m ChatDownload' \
-                  + ' --ffmpeg-path "ffmpeg"' \
+                  + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' --id ' + str(video['helix']['id']) + ' --embed-emotes' \
                   + ' -o ' + file_path_chat_tmp
             print("CMD: " + str(cmd))
@@ -567,7 +572,7 @@ for idx, user in enumerate(users):
             if proc.returncode != 0:
                 print("ERR: Chat could not download. It may have some missing emojis we cannot embed. Trying without...")               
                 cmd = path_twitch_cli + ' -m ChatDownload' \
-                  + ' --ffmpeg-path "ffmpeg"' \
+                  + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' --id ' + str(video['helix']['id']) \
                   + ' -o ' + file_path_chat_tmp
                 print("CMD: " + str(cmd))
@@ -641,7 +646,7 @@ for idx, user in enumerate(users):
             print("\t- rendering chat: " + file_path_render)
             t0 = time.time()
             cmd = path_twitch_cli + ' -m ChatRender' \
-                  + ' -i ' + file_path_chat + ' --ffmpeg-path "ffmpeg"' \
+                  + ' -i ' + file_path_chat + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                   + ' -h 926 -w 274 --update-rate 0.1 --framerate 60 --font-size 15' \
                   + ' --temp-path "' + path_temp + '" -o ' + file_path_render_tmp
             # subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()

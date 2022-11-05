@@ -37,6 +37,11 @@ date_end = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')
 print("Start Day: "+date_start)
 print("End Day: "+date_end)
 
+# Check for ffmpeg path as installed by static-ffmpeg and the installed version of python/pip
+#   A full path is needed for TwitchDownloader
+
+ffmpeg_path = shutil.which('ffmpeg'))
+
 # ================================================================
 # ================================================================
 
@@ -179,7 +184,7 @@ for idx, user in enumerate(users):
             if not utils.terminated_requested and not os.path.exists(file_path):
                 print("\t- download clip: " + str(video['id']))
                 cmd = path_twitch_cli + ' -m ClipDownload' \
-                      + ' --id ' + str(video['id']) + ' --ffmpeg-path "ffmpeg"' \
+                      + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                       + ' -o ' + file_path_tmp
                       #+ ' --temp-path "' + path_root + '/TEMP/" --quality 1080p60 -o ' + file_path
                 # print("\t- CMD: " + str(cmd))
@@ -198,7 +203,7 @@ for idx, user in enumerate(users):
                 if not utils.terminated_requested:
                     print("\t- download chat: " + str(video['id']) + "_chat.json")
                     cmd = path_twitch_cli + ' -m ChatDownload' \
-                          + ' --id ' + str(video['id']) + ' --ffmpeg-path "ffmpeg"' \
+                          + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + ffmpeg_path + '"' \
                           + ' --embed-emotes' + ' -o ' + file_path_chat_tmp
                     # print("\t- CMD: " + str(cmd))
 
