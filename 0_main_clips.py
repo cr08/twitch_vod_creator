@@ -179,7 +179,7 @@ for idx, user in enumerate(users):
                       + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
                       + ' -o ' + file_path_tmp
                       #+ ' --temp-path "' + path_root + '/TEMP/" --quality 1080p60 -o ' + file_path
-                print("CMD: " + str(cmd))
+                # print("\t- CMD: " + str(cmd))
                 # subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
                 subprocess.Popen(cmd, shell=True).wait()
                 shutil.move(file_path_tmp, file_path) 
