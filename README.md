@@ -1,7 +1,7 @@
-# TwitchVault
+# TwitchVault [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 Simplified tool to automatically archive VODs, clips, highlights, including associated chat logs for specified Twitch channels
 
-__NOTE:__ This repo/fork has been deprecated - Work has continued under [TwitchVault](https://github.com/cr08/TwitchVault) (https://github.com/cr08/TwitchVault)
+__NOTE:__ ⛔ [DEPRECATED] This repo/fork has been deprecated - Migrated to standalone repo: [TwitchVault](https://github.com/cr08/TwitchVault) (https://github.com/cr08/TwitchVault)
 ***
 ## Concept
 My personal goal has been to find or develop a tool that can not only automate archiving the latest VODs, clips, and highlights from selected Twitch channels, but also archiving the chat logs as they are available for each medium.
