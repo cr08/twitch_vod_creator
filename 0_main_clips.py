@@ -177,7 +177,7 @@ for idx, user in enumerate(users):
             if not utils.terminated_requested and not os.path.exists(file_path):
                 cmd = path_twitch_cli + ' -m ClipDownload' \
                       + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
-                      + '-o ' + file_path_tmp
+                      + ' -o ' + file_path_tmp
                       #+ ' --temp-path "' + path_root + '/TEMP/" --quality 1080p60 -o ' + file_path
                 print("CMD: " + str(cmd))
                 # subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).wait()
