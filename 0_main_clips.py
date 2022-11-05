@@ -186,7 +186,7 @@ for idx, user in enumerate(users):
                 count_total_clips_downloaded = count_total_clips_downloaded + 1
 
             # CHAT: check if the file exists
-            file_path_chat = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " + utils.cleanFilename(str(data['game'])) + " - " + str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_chat.json"
+            file_path_chat = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " + utils.cleanFilename(str(game_title)) + " - " + str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip_chat.json"
             file_bad = file_path_chat + ".BAD"
             file_path_chat_tmp = path_temp + str(video['id']) + "_chat.json"
             if os.path.exists(file_bad):
