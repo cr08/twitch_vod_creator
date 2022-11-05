@@ -12,13 +12,17 @@ import utils
 import datetime
 import shutil
 
+# importing static-ffmpeg and pre-downloading
+import static_ffmpeg
+static_ffmpeg.add_paths()
+
 # authentication information
 path_base = os.path.dirname(os.path.abspath(__file__))
-auth_config = path_base + "/config/auth.yaml"
-with open(auth_config) as f:
-    auth = yaml.load(f, Loader=yaml.FullLoader)
-client_id = auth["client_id"]
-client_secret = auth["client_secret"]
+config_file = path_base + "/config/config.yaml"
+with open(config_file) as f:
+    conf = yaml.load(f, Loader=yaml.FullLoader)
+client_id = conf["client_id"]
+client_secret = conf["client_secret"]
 
 clips_config = path_base + "/config/clips.yaml"
 with open(clips_config) as g:
@@ -37,10 +41,8 @@ print("End Day: "+date_end)
 # ================================================================
 
 # paths of the cli and data
-#path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI.exe"
-#path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-N-99900-g89429cf2f2-win64-lgpl/ffmpeg.exe"
-path_twitch_cli = path_base + "/thirdparty/TwitchDownloaderCLI"
-path_twitch_ffmpeg = path_base + "/thirdparty/ffmpeg-4.3.1-amd64-static/ffmpeg"
+tdcli = conf["twitchdownloader"]
+path_twitch_cli = path_base + tdcli
 path_root = clips["clip_downloads"]
 path_temp = clips["clip_temp"]
 
@@ -177,7 +179,7 @@ for idx, user in enumerate(users):
             if not utils.terminated_requested and not os.path.exists(file_path):
                 print("\t- download clip: " + str(video['id']))
                 cmd = path_twitch_cli + ' -m ClipDownload' \
-                      + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
+                      + ' --id ' + str(video['id']) + ' --ffmpeg-path "ffmpeg"' \
                       + ' -o ' + file_path_tmp
                       #+ ' --temp-path "' + path_root + '/TEMP/" --quality 1080p60 -o ' + file_path
                 # print("\t- CMD: " + str(cmd))
@@ -196,7 +198,7 @@ for idx, user in enumerate(users):
                 if not utils.terminated_requested:
                     print("\t- download chat: " + str(video['id']) + "_chat.json")
                     cmd = path_twitch_cli + ' -m ChatDownload' \
-                          + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
+                          + ' --id ' + str(video['id']) + ' --ffmpeg-path "ffmpeg"' \
                           + ' --embed-emotes' + ' -o ' + file_path_chat_tmp
                     # print("\t- CMD: " + str(cmd))
 

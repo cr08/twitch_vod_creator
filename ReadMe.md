@@ -4,9 +4,24 @@ Simplified tool to automatically archive VODs, clips, highlights, including asso
 ## Concept
 My personal goal has been to find or develop a tool that can not only automate archiving the latest VODs, clips, and highlights from selected Twitch channels, but also archiving the chat logs as they are available for each medium.
 
+## Install Guide
+0) Ensure Python 3.8 minimum is installed.
+1) Clone this repository:
+    * `git clone https://github.com/cr08/twitch_vod_creator`
+2) Install main python depencies:
+    * `python3 -m pip install --user -r requirements.txt`
+3) Download and place [TwitchDownloaderCLI](https://github.com/lay295/TwitchDownloader/releases) for your platform into `/thirdparty`
+    * Latest release recommended, minimum `1.50.6` required as it fixes a chat download issue
+4) Copy and fill out all `config/*.yaml.example` files as necessary.
+    * An application needs to be registered with Twitch from the [Twitch Dev console](https://dev.twitch.tv/) - client ID and secret need to be entered into `config/config.yaml`
+5) Run scripts as desired:
+    * `python3 0_main_videos.py`
+    * `python3 0_main_clips.py`
+6) __Optional__ - Linux targets: Add scripts to crontab using `docs/crontab_script_launcher.sh`
+    * WIP - details to be added here
+
 ### Known Issues
 * VTT render produces files with a single word displayed at a time (at least as played via VLC). This needs to be fixed. I may just switch this to SRT as Vosk can natively output this and hopefully it outputs correctly. More testing needed here...
-* If a video is missing the chat log (usually due to an ancient clip or highlight that the source VOD is gone), it keeps attempting to download each run. Possible workaround: Determine if TDCLI provides a useful error for this condition and write a placeholder `_chat.json` to satisfy the file checks.
 
 ## Credit & Attribution
 
