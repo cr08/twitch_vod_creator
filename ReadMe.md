@@ -17,8 +17,8 @@ My personal goal has been to find or develop a tool that can not only automate a
 4) Copy and fill out all __config/\*.yaml.example__ files as necessary.
     * An application needs to be registered with Twitch from the [Twitch Dev console](https://dev.twitch.tv/) - client ID and secret need to be entered into __config/config.yaml__
 5) Run scripts as desired:
-    * `python3 0_main_videos.py`
-    * `python3 0_main_clips.py`
+    * `python3 videos.py`
+    * `python3 clips.py`
 6) __Optional__ - Linux targets: Add scripts to crontab using __docs/crontab_script_launcher.sh__
     * WIP - details to be added here
 
