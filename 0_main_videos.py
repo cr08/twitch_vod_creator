@@ -48,6 +48,7 @@ path_model = path_base + "/thirdparty/vosk-model-small-en-us-0.15/"
 # setup control+c handler
 utils.setup_signal_handle()
 
+users = {}
 if len(channels) != len(render_chat) or len(channels) != len(render_webvtt):
     print('number of channels and chat render settings do not match!!')
     print('\tlen(channels) = %d' % len(channels))
