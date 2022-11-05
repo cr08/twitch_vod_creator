@@ -91,7 +91,7 @@ for idx, user in enumerate(users):
         # vid_iter = client_helix.get_clips(broadcaster_id=user["id"], page_size=100)
         # arr_clips = []
 
-        for video in vid_iter:
+        for video in vid_iter[:]:
 
             # check if we should download any more
             if utils.terminated_requested:
@@ -153,28 +153,29 @@ for idx, user in enumerate(users):
                 with open(file_path_info, 'w', encoding="utf-8") as file:
                     json.dump(data, file, indent=4)
 
-            elif not utils.terminated_requested:
-                print("\t- updating clip info: " + str(video['view_count']) + " views")
-                with open(file_path_info) as f:
-                    video_info = json.load(f)
-                # update view count
-                video_info["view_count"] = video['view_count']
-                # update clip location if failed before
-                if video_info["video_offset"] == -1:
-                    clip_data = utils.get_clip_data(video['id'])
-                    if clip_data['offset'] != -1:
-                        video_info["video_offset"] = clip_data['offset']
-                        video_info["duration"] = clip_data['duration']
-                # finally write to file
-                with open(file_path_info, 'w', encoding="utf-8") as file:
-                    json.dump(video_info, file, indent=4)
+            # elif not utils.terminated_requested:
+            #     print("\t- updating clip info: " + str(video['view_count']) + " views")
+            #     with open(file_path_info) as f:
+            #         video_info = json.load(f)
+            #     # update view count
+            #     video_info["view_count"] = video['view_count']
+            #     # update clip location if failed before
+            #     if video_info["video_offset"] == -1:
+            #         clip_data = utils.get_clip_data(video['id'])
+            #         if clip_data['offset'] != -1:
+            #             video_info["video_offset"] = clip_data['offset']
+            #             video_info["duration"] = clip_data['duration']
+            #     # finally write to file
+            #     with open(file_path_info, 'w', encoding="utf-8") as file:
+            #         json.dump(video_info, file, indent=4)
 
 
             # VIDEO: check if the file exists
             file_path = path_data + str(video['created_at'].strftime('%Y%m%d T%H%M%SZ')) + " - " + str(video['id']) + " - " + utils.cleanFilename(str(video['title']))  + "_clip.mp4"
             file_path_tmp = path_temp + str(video['id']) + ".mp4"
-            print("\t- download clip: " + str(video['id']))
+
             if not utils.terminated_requested and not os.path.exists(file_path):
+                print("\t- download clip: " + str(video['id']))
                 cmd = path_twitch_cli + ' -m ClipDownload' \
                       + ' --id ' + str(video['id']) + ' --ffmpeg-path "' + path_twitch_ffmpeg + '"' \
                       + ' -o ' + file_path_tmp
